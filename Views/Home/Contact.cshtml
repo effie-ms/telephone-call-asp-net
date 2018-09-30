@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Contact"];
+}
+<h2>@ViewData["Title"]</h2>
+
+<address>
+    @(ViewData["StudentName"] + " (" + ViewData["UniID"] + ")")<br />
+</address>
+
+<address>
+    <strong>E-mail: </strong> <a href="mailto:@ViewData["EMail"]">@ViewData["EMail"]</a><br />
+</address>

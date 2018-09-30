@@ -1,0 +1,45 @@
+﻿@using TelephoneCallsWebApplication.Data;
+@model List<TelephoneCallsWebApplication.Models.Call>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["All Calls"];
+}
+
+<h2>@Localizer["Caller"] # @ViewData["phoneNumber"]: @Localizer["All Calls"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Localizer["Timestamp"]</th>
+            <th>@Localizer["Talk Duration (minutes)"]</th>
+            <th>@Localizer["Receiver"]</th>
+            <th>@Localizer["Type"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Timestamp
+                </td>
+                <td>
+                    @item.TalkDuration
+                </td>
+                <td>
+                    @item.Receiver
+                </td>
+                <td>
+                    @Localizer[item.CallType]
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="Events" asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+

@@ -1,0 +1,159 @@
+﻿@using TelephoneCallsWebApplication.Data;
+@using TelephoneCallsWebApplication.Models;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model PaginatedList<TelephoneCallsWebApplication.Models.Event>
+
+
+@{
+    ViewData["Title"] = Localizer["Event Records"];
+    
+    var choiceList = new List<string> { "Caller", "Receiver" };
+    string searchBy = "";
+    List<string> chooseEventTypes = new List<string>()
+    {
+        EventType.EventDial.EventName,
+        EventType.EventHangUp.EventName,
+        EventType.EventPickUp.EventName,
+        EventType.EventCallEstablished.EventName,
+        EventType.EventCallEnd.EventName
+    };
+    List<string> eventTypes = new List<string>();
+}
+
+<h2>@Localizer["Event Records"]</h2>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <div class="form-group">
+            <label asp-for="@searchBy" class="control-label">@Localizer["Search by"] </label>
+            <select class="dropdown" asp-for="@searchBy">
+                @foreach (string choice in choiceList)
+                {
+                    <option value="@choice">@Localizer[choice]</option>
+                }
+            </select>
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@eventTypes" class="control-label">@Localizer["Event types (hold ctrl to select more than one)"]:</label>
+            <select id="eventTypeSelect" multiple class="form-control" asp-for="@eventTypes">
+                @foreach (string type in chooseEventTypes)
+                {
+                    bool selected = (ViewData["EventTypes"] != null) ? ViewData["EventTypes"].ToString().Contains(type) : false;
+                    <option value=@type selected=@selected>@Localizer[type]</option>
+                }
+            </select>
+            <input type="submit" value="@Localizer["Search"]" class="btn btn-default" /> |
+            <a asp-action="Index"
+               asp-route-pageSize="@ViewData["PageSize"]">@Localizer["Back to Full List"]</a>
+        </div>
+    </div>
+</form>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-8" style="padding-top:10px;">
+            <button asp-action="Export"
+                    asp-route-sortOrder="@ViewData["CurrentSort"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    asp-route-searchBy="@ViewData["SearchBy"]"
+                    asp-route-eventTypes="@ViewData["EventTypes"]">
+                @Localizer["Export"]
+            </button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CallerSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-pageSize="@ViewData["PageSize"]"
+                   asp-route-searchBy="@ViewData["SearchBy"]">@Localizer["Caller"]</a>
+</th>
+            <th>
+                @Localizer["Event"]
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["ReceiverSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-pageSize="@ViewData["PageSize"]"
+                   asp-route-searchBy="@ViewData["SearchBy"]">@Localizer["Receiver"]</a>
+</th>
+            <th>
+                @Localizer["Timestamp"]
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Events", new { id = item.ID }))'">
+                <td>
+                    <a href="@(Url.Action("Details", "Calls", new { phoneNumber = item.Call.Caller }))">@item.Call.Caller</a>
+                </td>
+                <td>
+                    @Localizer[item.EventType.EventName]
+                </td>
+                <td>
+                    @(item.Call.Receiver.HasValue ? item.Call.Receiver.Value.ToString() : "-")
+                </td>
+                <td>
+                    @item.Date
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-pageSize="@ViewData["PageSize"]"
+   asp-route-searchBy="@ViewData["SearchBy"]"
+   asp-route-eventTypes="@ViewData["EventTypes"]"
+   class="btn btn-default @prevDisabled">
+    @Localizer["Previous"]
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-pageSize="@ViewData["PageSize"]"
+   asp-route-searchBy="@ViewData["SearchBy"]"
+   asp-route-eventTypes="@ViewData["EventTypes"]"
+   class="btn btn-default @nextDisabled">
+    @Localizer["Next"]
+</a>
+
+<div style="display:flex; padding-top:20px;">
+    <b>@Localizer["Records per page"]:</b>
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">@ViewData["PageSize"]<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li>
+                <a asp-action="Index"
+                   asp-route-pageSize=5>5</a>
+            </li>
+            <li>
+                <a asp-action="Index"
+                   asp-route-pageSize=10>10</a>
+            </li>
+            <li>
+                <a asp-action="Index"
+                   asp-route-pageSize=25>25</a>
+            </li>
+        </ul>
+    </div>
+</div>

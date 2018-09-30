@@ -1,0 +1,48 @@
+﻿@model TelephoneCallsWebApplication.Models.Event
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Call Details"];
+}
+
+<h2>@Localizer["Call Details"]</h2>
+
+<div>
+    <h4>@Localizer["Caller"] # @Model.Call.Caller : @Localizer[Model.Call.CallType]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Localizer["Receiver"]:
+        </dt>
+        <dd>
+            @Model.Call.Receiver
+        </dd>
+        <dt>
+            @Localizer["Events"]:
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>@Localizer["Event"]</th>
+                    <th>@Localizer["Event Date"]</th>
+                </tr>
+                @foreach (var item in Model.Call.Events)
+                {
+                    <tr>
+                        <td>
+                            @Localizer[EventType.GetEventTypeById(item.EventTypeID)]
+                        </td>
+                        <td>
+                            @item.Date
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
