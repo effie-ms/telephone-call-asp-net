@@ -29,7 +29,8 @@ namespace TelephoneCallsWebApplication.Controllers
                 return NotFound();
             }
 
-            var calls = _context.Calls.Include(x => x.Events).Where(x => x.Caller == phoneNumber);
+            var calls = await _context.Calls
+                .Include(x => x.Events).Where(x => x.Caller == phoneNumber).ToListAsync();
 
             if (calls == null)
             {

@@ -157,7 +157,7 @@
     <value>Набор номера</value>
   </data>
   <data name="Receiver" xml:space="preserve">
-    <value>Принимающий абонент</value>
+    <value>Прин. абонент</value>
   </data>
   <data name="Regular call" xml:space="preserve">
     <value>Обычный звонок</value>
