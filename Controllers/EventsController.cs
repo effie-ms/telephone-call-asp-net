@@ -172,7 +172,7 @@ namespace TelephoneCallsWebApplication.Controllers
                     row.CreateCell(0).SetCellValue(events[i - 1].Call.Caller.ToString());
                     row.CreateCell(1).SetCellValue(events[i - 1].EventType.EventName);
                     row.CreateCell(2).SetCellValue(events[i - 1].Call.Receiver.HasValue ? events[i - 1].Call.Receiver.Value.ToString() : "-");
-                    row.CreateCell(3).SetCellValue(events[i - 1].Date.ToString());
+                    row.CreateCell(3).SetCellValue(events[i - 1].Date.ToString("dd/MM/yyyy HH:mm:ss"));
                 }
                 workbook.Write(fs);
             }

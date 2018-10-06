@@ -104,7 +104,7 @@
                     @(item.Call.Receiver.HasValue ? item.Call.Receiver.Value.ToString() : "-")
                 </td>
                 <td>
-                    @item.Date
+                    @Html.DisplayFor(modelItem => item.Date)
                 </td>
             </tr>
         }

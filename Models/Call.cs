@@ -17,7 +17,7 @@ namespace TelephoneCallsWebApplication.Models
         public int Caller { get; set; }
 
         [Column("RECEIVER")]
-        [DisplayFormat(NullDisplayText = "No receiver")]
+        [DisplayFormat(NullDisplayText = "-")]
         public int? Receiver { get; set; }
 
         public ICollection<Event> Events { get; set; }

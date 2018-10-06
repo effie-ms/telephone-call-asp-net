@@ -23,13 +23,13 @@
         {
             <tr>
                 <td>
-                    @item.Timestamp
+                    @Html.DisplayFor(modelItem => item.Timestamp)
                 </td>
                 <td>
                     @item.TalkDuration
                 </td>
                 <td>
-                    @item.Receiver
+                    @Html.DisplayFor(modelItem => item.Receiver)
                 </td>
                 <td>
                     @Localizer[item.CallType]

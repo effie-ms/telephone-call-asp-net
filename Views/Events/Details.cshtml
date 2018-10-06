@@ -16,7 +16,7 @@
             @Localizer["Receiver"]:
         </dt>
         <dd>
-            @Model.Call.Receiver
+            @Html.DisplayFor(modelItem => Model.Call.Receiver)
         </dd>
         <dt>
             @Localizer["Events"]:
@@ -34,7 +34,7 @@
                             @Localizer[EventType.GetEventTypeById(item.EventTypeID)]
                         </td>
                         <td>
-                            @item.Date
+                            @Html.DisplayFor(modelItem => item.Date)
                         </td>
                     </tr>
                 }
